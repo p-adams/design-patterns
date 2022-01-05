@@ -1,10 +1,26 @@
 <script lang="ts"></script>
 
 <article>
-  <slot name="header" />
+  <header>
+    <slot name="header" />
+  </header>
+
   <section>
-    <slot name="component" />
+    <div class="description-wrapper">
+      <slot name="description" />
+    </div>
+    <div class="component-wrapper">
+      <slot name="component" />
+    </div>
   </section>
 </article>
 
-<style></style>
+<style scoped>
+  section {
+    display: flex;
+    flex-direction: column;
+  }
+  section .description-wrapper {
+    margin-bottom: 10px;
+  }
+</style>

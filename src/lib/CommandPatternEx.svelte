@@ -3,7 +3,7 @@
 
 <canvas width={300} height={300} />
 
-<style>
+<style scoped>
   canvas {
     border: 1px solid blue;
   }

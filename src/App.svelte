@@ -6,6 +6,7 @@
 <main>
   <DesignPatternTemplate>
     <h2 slot="header">Command Pattern</h2>
+    <div slot="description">An example of the Command Pattern</div>
     <CommandPatternEx slot="component" />
   </DesignPatternTemplate>
 </main>
