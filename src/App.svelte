@@ -1,13 +1,13 @@
 <script lang="ts">
+  import DesignPatternTemplate from "./lib/DesignPatternTemplate.svelte";
+  import CommandPatternEx from "./lib/CommandPatternEx.svelte";
 </script>
 
 <main>
-  <article>
-    <h2>Command Pattern</h2>
-    <section>
-      <canvas />
-    </section>
-  </article>
+  <DesignPatternTemplate>
+    <h2 slot="header">Command Pattern</h2>
+    <CommandPatternEx slot="component" />
+  </DesignPatternTemplate>
 </main>
 
 <style>
