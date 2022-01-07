@@ -1,6 +1,20 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+  import shipImg from "../assets/ship.png";
+  const WIDTH = 500;
+  const HEIGHT = 300;
   let tabIndex = -1;
   let toggleSettings = false;
+  let canvas: HTMLCanvasElement;
+  let ctx: CanvasRenderingContext2D;
+  let img = new Image();
+  onMount(() => {
+    ctx = canvas.getContext("2d");
+    img.onload = function () {
+      ctx.drawImage(img, 10, 10, 35, 35);
+    };
+    img.src = shipImg;
+  });
   function onKeyup(e) {
     console.log(e.key);
   }
@@ -15,9 +29,10 @@
 
 <header><h3>Asteroids</h3></header>
 <canvas
+  bind:this={canvas}
   on:dblclick={() => start()}
-  width={500}
-  height={300}
+  width={WIDTH}
+  height={HEIGHT}
   on:keyup={(e) => onKeyup(e)}
   on:keydown={(e) => onKeyDown(e)}
   {tabIndex}
