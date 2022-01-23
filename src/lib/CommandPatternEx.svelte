@@ -1,12 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import sharkImg from "../assets/shark.png";
-  const WIDTH = 600;
-  const HEIGHT = 300;
-  const SIZE = 35;
+  const WIDTH = 700;
+  const HEIGHT = 400;
+  const SIZE = 45;
   let startX = 50;
   let startY = 150;
-
+  let speed = 45;
   let tabIndex = -1;
   let toggleSettings = false;
   let canvas: HTMLCanvasElement;
@@ -24,16 +24,16 @@
     switch (e.code) {
       // temp default static key bindings until command pattern is implemented
       case "ArrowUp":
-        move(startX, (startY -= 10));
+        move(startX, (startY -= speed));
         break;
       case "ArrowDown":
-        move(startX, (startY += 10));
+        move(startX, (startY += speed));
         break;
       case "ArrowRight":
-        move((startX += 10), startY);
+        move((startX += speed), startY);
         break;
       case "ArrowLeft":
-        move((startX -= 10), startY);
+        move((startX -= speed), startY);
       default:
         break;
     }
