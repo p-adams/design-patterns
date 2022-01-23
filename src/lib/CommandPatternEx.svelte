@@ -1,8 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import sharkImg from "../assets/shark.png";
-  const WIDTH = 500;
+  const WIDTH = 600;
   const HEIGHT = 300;
+  const SIZE = 35;
+  let startX = 50;
+  let startY = 150;
+
   let tabIndex = -1;
   let toggleSettings = false;
   let canvas: HTMLCanvasElement;
@@ -11,34 +15,45 @@
   onMount(() => {
     ctx = canvas.getContext("2d");
     img.onload = function () {
-      ctx.drawImage(img, 10, 10, 35, 35);
+      ctx.drawImage(img, startX, startY, SIZE, SIZE);
     };
     img.src = sharkImg;
   });
-  function onKeyup(e) {
-    console.log(e.key);
-  }
-  function onKeyDown(e) {
-    console.log(e.key);
-  }
 
-  function start() {
-    tabIndex = 1;
+  function onKeyDown(e: KeyboardEvent) {
+    switch (e.code) {
+      // temp default static key bindings until command pattern is implemented
+      case "ArrowUp":
+        move(startX, (startY -= 10));
+        break;
+      case "ArrowDown":
+        move(startX, (startY += 10));
+        break;
+      case "ArrowRight":
+        move((startX += 10), startY);
+        break;
+      case "ArrowLeft":
+        move((startX -= 10), startY);
+      default:
+        break;
+    }
+  }
+  function move(x, y) {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.drawImage(img, x, y, SIZE, SIZE);
   }
 </script>
 
 <header><h3>Flippy Shark</h3></header>
 <canvas
   bind:this={canvas}
-  on:dblclick={() => start()}
   width={WIDTH}
   height={HEIGHT}
-  on:keyup={(e) => onKeyup(e)}
   on:keydown={(e) => onKeyDown(e)}
   {tabIndex}
 />
 <div class="control-menu-panel">
-  <span>Double-click canvas to start game</span>
+  <span>Click canvas to start game</span>
 
   <div class="settings-controls">
     <i
@@ -60,7 +75,7 @@
     text-align: center;
   }
   canvas {
-    border: 1px solid blue;
+    box-shadow: inset 4px 4px 10px lightblue;
   }
   .control-menu-panel {
     display: flex;
