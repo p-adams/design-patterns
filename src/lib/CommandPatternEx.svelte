@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import shipImg from "../assets/ship.png";
+  import sharkImg from "../assets/shark.png";
   const WIDTH = 500;
   const HEIGHT = 300;
   let tabIndex = -1;
@@ -13,7 +13,7 @@
     img.onload = function () {
       ctx.drawImage(img, 10, 10, 35, 35);
     };
-    img.src = shipImg;
+    img.src = sharkImg;
   });
   function onKeyup(e) {
     console.log(e.key);
@@ -27,7 +27,7 @@
   }
 </script>
 
-<header><h3>Asteroids</h3></header>
+<header><h3>Flippy Shark</h3></header>
 <canvas
   bind:this={canvas}
   on:dblclick={() => start()}
