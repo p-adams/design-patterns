@@ -1,6 +1,6 @@
 <script lang="ts">
   import DesignPatternTemplate from "./lib/DesignPatternTemplate.svelte";
-  import CommandPatternEx from "./lib/CommandPatternEx.svelte";
+  import CommandPatternEx from "./lib/CommandPattern/CommandPatternEx.svelte";
 </script>
 
 <main>
