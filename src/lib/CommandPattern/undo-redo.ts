@@ -1,5 +1,16 @@
-export function UndoRedo() {
-  const state = {
+/**
+ * supports undo and redo up to 20
+ * 1) User executed commands
+ * 2) History buffers
+ * 3) Undo/Redo manager
+ */
+
+export function undoRedoCoordinator() {
+  const historyBufferState: {
+    past: Array<string>;
+    present: string;
+    future: Array<string>;
+  } = {
     past: [],
     present: null,
     future: [],
