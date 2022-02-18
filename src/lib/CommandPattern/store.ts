@@ -1,12 +1,7 @@
 import { writable } from "svelte/store";
+// history buffers
+export const past = writable<Array<string>>([]);
 
-export interface HistoryBufferState {
-  past: Array<string>;
-  present: string;
-  future: Array<string>;
-}
-export const historyBuffer = writable<HistoryBufferState>({
-  past: [],
-  present: "",
-  future: [],
-});
+export const present = writable<string>("");
+
+export const future = writable<Array<string>>([]);

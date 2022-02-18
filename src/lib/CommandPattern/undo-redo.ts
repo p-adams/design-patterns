@@ -5,13 +5,17 @@
  * 3) Undo/Redo manager
  */
 
-import { historyBuffer, HistoryBufferState } from "./store";
+import { past, present, future } from "./store.ts";
 
 export function undoRedoCoordinator() {
-  const historyBufferState = historyBuffer;
-
+  past.subscribe((value: any) => {
+    console.log(value);
+  });
   return () => {
     return {
+      addInput: (input: string) => {
+        past.update((state: Array<string>) => [...state, input]);
+      },
       execUndo: () => {
         // push present item to start of future
         // pop last item from past and set to present

@@ -1,11 +1,18 @@
 <script lang="ts">
   import { marked } from "marked";
   import { afterUpdate } from "svelte";
+  import { undoRedoCoordinator } from "./undo-redo";
   let input = "";
   let markedInput = null;
+  let undoable = null;
   afterUpdate(() => {
     markedInput = marked(input, { sanitize: true });
+    undoable = undoRedoCoordinator();
   });
+  function processInput(target) {
+    undoable().addInput(target.value);
+    return input;
+  }
 </script>
 
 <article class="command-pattern-example-wrapper">
@@ -15,7 +22,10 @@
   <section class="markdown-editor-wrapper">
     <div class="input-output-container">
       <div class="editor">
-        <textarea bind:value={input} />
+        <textarea
+          bind:value={input}
+          on:input={({ target }) => processInput(target)}
+        />
       </div>
       <div class="output">
         {@html markedInput}
