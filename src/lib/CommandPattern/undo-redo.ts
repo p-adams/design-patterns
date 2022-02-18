@@ -5,24 +5,21 @@
  * 3) Undo/Redo manager
  */
 
+import { historyBuffer, HistoryBufferState } from "./store";
+
 export function undoRedoCoordinator() {
-  const historyBufferState: {
-    past: Array<string>;
-    present: string;
-    future: Array<string>;
-  } = {
-    past: [],
-    present: null,
-    future: [],
-  };
-  return {
-    execUndo: () => {
-      // push present item to start of future
-      // pop last item from past and set to present
-    },
-    execRedo: () => {
-      // remove item from beginning of future and set as present
-      // push present item to end of past
-    },
+  const historyBufferState = historyBuffer;
+
+  return () => {
+    return {
+      execUndo: () => {
+        // push present item to start of future
+        // pop last item from past and set to present
+      },
+      execRedo: () => {
+        // remove item from beginning of future and set as present
+        // push present item to end of past
+      },
+    };
   };
 }
