@@ -13,6 +13,10 @@
     undoable().addInput(target.value);
     return input;
   }
+
+  function undo() {
+    console.log("undo");
+  }
 </script>
 
 <article class="command-pattern-example-wrapper">
@@ -26,6 +30,9 @@
           bind:value={input}
           on:input={({ target }) => processInput(target)}
         />
+        <div>
+          <button on:click={() => undo()}>Undo</button>
+        </div>
       </div>
       <div class="output">
         {@html markedInput}

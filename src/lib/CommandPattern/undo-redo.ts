@@ -14,7 +14,7 @@ export function undoRedoCoordinator() {
   return () => {
     return {
       addInput: (input: string) => {
-        past.update((state: Array<string>) => [...state, input]);
+        past.set(input);
       },
       execUndo: () => {
         // push present item to start of future
