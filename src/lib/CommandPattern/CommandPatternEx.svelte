@@ -7,11 +7,8 @@
   let undoable = undoRedoCoordinator();
 
   afterUpdate(() => {
-    if (input) {
-      markedInput = marked(input, { sanitize: true });
-    } else {
-      markedInput = null;
-    }
+    if (!input) return;
+    markedInput = marked(input, { sanitize: true });
   });
 
   function processInput(target) {
