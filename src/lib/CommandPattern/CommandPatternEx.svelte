@@ -7,8 +7,11 @@
   let undoable = undoRedoCoordinator();
 
   afterUpdate(() => {
-    if (!input) return;
-    markedInput = marked(input, { sanitize: true });
+    if (input) {
+      markedInput = marked(input, { sanitize: true });
+    } else {
+      markedInput = null;
+    }
   });
 
   function processInput(target) {
@@ -36,6 +39,8 @@
 <article class="command-pattern-example-wrapper">
   <!-- demonstrates command pattern with undo/redo functionality -->
   <header>markdown editor</header>
+  <button on:click={() => undo()}>Undo</button>
+  <button on:click={() => redo()}>Redo</button>
 
   <section class="markdown-editor-wrapper">
     <div class="input-output-container">
@@ -44,10 +49,6 @@
           bind:value={input}
           on:input={({ target }) => processInput(target)}
         />
-        <div>
-          <button on:click={() => undo()}>Undo</button>
-          <button on:click={() => redo()}>Redo</button>
-        </div>
       </div>
       <div class="output">
         {@html markedInput}
@@ -64,7 +65,13 @@
   .command-pattern-example-wrapper {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
+  button {
+    margin: 10px 0 2px 0;
+  }
+
   header {
     text-transform: capitalize;
     text-align: center;
