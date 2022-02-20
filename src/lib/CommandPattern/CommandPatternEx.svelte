@@ -1,11 +1,11 @@
 <script lang="ts">
   import { marked } from "marked";
   import { afterUpdate } from "svelte";
-  import { undoRedoCoordinator } from "./undo-redo";
+  import { undoRedoCoordinator, historyBuffers } from "./undo-redo";
+  const { past, present } = historyBuffers;
   let input = "";
   let markedInput = null;
   let undoable = undoRedoCoordinator();
-
   afterUpdate(() => {
     if (input) {
       markedInput = marked(input, { sanitize: true });
@@ -16,23 +16,19 @@
 
   function processInput(target) {
     const { onInput } = undoable();
-    onInput(target.value).subscribe((value) => {
-      input = value;
-    });
+    onInput(target.value);
   }
 
   function undo() {
     const { undo } = undoable();
-    undo().subscribe((values: string[]) => {
-      input = values[values.length - 1];
-    });
+    undo();
+    input = $past[$past.length - 1];
   }
 
   function redo() {
     const { redo } = undoable();
-    redo().subscribe((value: string) => {
-      input = value;
-    });
+    redo();
+    input = $present;
   }
 </script>
 

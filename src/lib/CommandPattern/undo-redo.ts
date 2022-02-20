@@ -5,7 +5,13 @@
  * 3) Undo/Redo manager
  */
 
-import { past, present, future } from "./store.ts";
+import { past, present, future } from "./store";
+
+export const historyBuffers = {
+  past,
+  present,
+  future,
+};
 
 export function logger() {
   past.subscribe((past: string[]) => {
@@ -25,21 +31,19 @@ export function undoRedoCoordinator() {
       onInput: (input: string) => {
         past.update((p: string[]) => [...p, input]);
         present.set(input);
-        return present;
       },
       undo: () => {
         // pop last item from past and set to present
         const unsubscriptPast = past.subscribe((p: string[]) => {
           if (p.length) present.set(p.pop());
         });
-        unsubscriptPast();
+
         // push present item to start of future
         const unsubscripePresent = present.subscribe((p: string) => {
           future.update((f: string[]) => [p, ...f]);
         });
+        unsubscriptPast();
         unsubscripePresent();
-
-        return past;
       },
       redo: () => {
         // remove item from beginning of future and set as present
@@ -52,12 +56,6 @@ export function undoRedoCoordinator() {
         });
         unsubscribeFuture();
         unsubscripePresent();
-        return present;
-      },
-      historyBuffers: {
-        past,
-        present,
-        future,
       },
     };
   };
