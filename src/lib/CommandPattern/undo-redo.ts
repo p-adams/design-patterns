@@ -1,10 +1,3 @@
-/**
- * supports undo and redo up to 20
- * 1) User executed commands
- * 2) History buffers
- * 3) Undo/Redo manager
- */
-
 import { past, present, future } from "./store";
 
 export const historyBuffers = {
