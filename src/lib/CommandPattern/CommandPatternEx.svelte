@@ -4,15 +4,14 @@
   import { undoRedoCoordinator } from "./undo-redo";
   let input = "";
   let markedInput = null;
-  let undoable = null;
+  let undoable = undoRedoCoordinator();
 
   afterUpdate(() => {
     if (input) {
       markedInput = marked(input, { sanitize: true });
     } else {
-      markedInput = "";
+      markedInput = null;
     }
-    undoable = undoRedoCoordinator();
   });
 
   function processInput(target) {
