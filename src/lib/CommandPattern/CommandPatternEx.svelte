@@ -7,32 +7,33 @@
   let undoable = null;
 
   afterUpdate(() => {
-    markedInput = marked(input, { sanitize: true });
+    if (input) {
+      markedInput = marked(input, { sanitize: true });
+    } else {
+      markedInput = "";
+    }
     undoable = undoRedoCoordinator();
   });
 
   function processInput(target) {
-    undoable()
-      .onInput(target.value)
-      .subscribe((value) => {
-        input = value;
-      });
+    const { onInput } = undoable();
+    onInput(target.value).subscribe((value) => {
+      input = value;
+    });
   }
 
   function undo() {
-    undoable()
-      .undo()
-      .subscribe((values: string[]) => {
-        input = values[values.length - 1];
-      });
+    const { undo } = undoable();
+    undo().subscribe((values: string[]) => {
+      input = values[values.length - 1];
+    });
   }
 
   function redo() {
-    undoable()
-      .redo()
-      .subscribe((value: string) => {
-        input = value;
-      });
+    const { redo } = undoable();
+    redo().subscribe((value: string) => {
+      input = value;
+    });
   }
 </script>
 
