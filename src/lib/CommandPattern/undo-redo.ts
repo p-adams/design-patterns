@@ -54,6 +54,11 @@ export function undoRedoCoordinator() {
         unsubscripePresent();
         return present;
       },
+      historyBuffers: {
+        past,
+        present,
+        future,
+      },
     };
   };
 }
