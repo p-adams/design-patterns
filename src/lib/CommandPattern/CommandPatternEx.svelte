@@ -5,17 +5,34 @@
   let input = "";
   let markedInput = null;
   let undoable = null;
+
   afterUpdate(() => {
     markedInput = marked(input, { sanitize: true });
     undoable = undoRedoCoordinator();
   });
+
   function processInput(target) {
-    undoable().addInput(target.value);
-    return input;
+    undoable()
+      .onInput(target.value)
+      .subscribe((value) => {
+        input = value;
+      });
   }
 
   function undo() {
-    console.log("undo");
+    undoable()
+      .undo()
+      .subscribe((values: string[]) => {
+        input = values[values.length - 1];
+      });
+  }
+
+  function redo() {
+    undoable()
+      .redo()
+      .subscribe((value: string) => {
+        input = value;
+      });
   }
 </script>
 
@@ -32,6 +49,7 @@
         />
         <div>
           <button on:click={() => undo()}>Undo</button>
+          <button on:click={() => redo()}>Redo</button>
         </div>
       </div>
       <div class="output">
