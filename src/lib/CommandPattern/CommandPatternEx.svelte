@@ -35,8 +35,10 @@
 <article class="command-pattern-example-wrapper">
   <!-- demonstrates command pattern with undo/redo functionality -->
   <header>markdown editor</header>
-  <button on:click={() => undo()}>Undo</button>
-  <button on:click={() => redo()}>Redo</button>
+  <div class="undo-redo-btn-wrapper">
+    <button on:click={() => undo()}>Undo</button>
+    <button on:click={() => redo()}>Redo</button>
+  </div>
 
   <section class="markdown-editor-wrapper">
     <div class="input-output-container">
@@ -64,9 +66,6 @@
     justify-content: center;
     align-items: center;
   }
-  button {
-    margin: 10px 0 2px 0;
-  }
 
   header {
     text-transform: capitalize;
@@ -78,6 +77,15 @@
     justify-content: center;
     align-items: center;
     align-content: center;
+  }
+  .undo-redo-btn-wrapper {
+    margin-top: 6px;
+    padding: 4px;
+    outline: 1px solid gray;
+    background-color: darkgray;
+  }
+  .undo-redo-btn-wrapper button {
+    margin-right: 3px;
   }
   .input-output-container {
     display: grid;

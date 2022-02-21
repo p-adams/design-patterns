@@ -1,5 +1,9 @@
-<script lang="ts"></script>
+<script lang="ts">
+</script>
 
 <article>
-  <section>observer pattern</section>
+  <header>observer pattern</header>
+  <section>
+    <p>subscribe to <!--<subscription> --></p>
+  </section>
 </article>

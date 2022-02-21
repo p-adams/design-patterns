@@ -10,7 +10,7 @@
     <div slot="description">An example of the Command Pattern</div>
     <CommandPatternEx slot="component" />
   </DesignPatternTemplate>
-  <DesignPatternTemplate>
+  <DesignPatternTemplate opened={true}>
     <h2 slot="header">Observer Pattern</h2>
     <div slot="description">An example of the Observer Pattern</div>
     <ObserverPatternEx slot="component" />
