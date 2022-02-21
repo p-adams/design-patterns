@@ -1,10 +1,13 @@
 <script lang="ts">
   export let opened = false;
-  let id: string | number;
+  export let id: string | number = null;
 </script>
 
 <article>
   <header>
+    {#if id}
+      <span class="template-id">{id}</span>
+    {/if}
     <slot name="header" />
     <span
       class={`expand-icon ${opened ? "expanded" : ""} `}
@@ -35,11 +38,15 @@
   .expand-icon::after {
     margin-left: 10px;
     color: black;
-    content: "⌄";
+    content: "+";
   }
 
   .expand-icon.expanded::after {
-    content: "⌃";
+    content: "-";
+  }
+
+  .template-id {
+    margin-right: 10px;
   }
   section {
     display: flex;

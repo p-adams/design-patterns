@@ -5,12 +5,12 @@
 </script>
 
 <main>
-  <DesignPatternTemplate>
+  <DesignPatternTemplate id="1">
     <h2 slot="header">Command Pattern</h2>
     <div slot="description">An example of the Command Pattern</div>
     <CommandPatternEx slot="component" />
   </DesignPatternTemplate>
-  <DesignPatternTemplate opened={true}>
+  <DesignPatternTemplate id="2" opened={true}>
     <h2 slot="header">Observer Pattern</h2>
     <div slot="description">An example of the Observer Pattern</div>
     <ObserverPatternEx slot="component" />
