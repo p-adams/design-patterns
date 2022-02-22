@@ -6,6 +6,7 @@
     { name: "REMOVE", label: "Remove" },
     */
   ];
+  function handleSubscriptionClick(subscription: Subscription) {}
 </script>
 
 <article>
@@ -21,7 +22,11 @@
         <span class="cell">{n}</span>
         <div class="cell">
           {#each subscriptions as subscription}
-            <div><button>{subscription.label}</button></div>
+            <div>
+              <button on:click={() => handleSubscriptionClick(subscription)}
+                >{subscription.label}</button
+              >
+            </div>
           {/each}
         </div>
       {/each}
