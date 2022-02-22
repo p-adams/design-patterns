@@ -5,6 +5,7 @@
 </script>
 
 <main>
+  <h2>Design Patterns</h2>
   <DesignPatternTemplate id="1">
     <h2 slot="header">Command Pattern</h2>
     <div slot="description">An example of the Command Pattern</div>
@@ -30,5 +31,8 @@
     text-align: center;
     padding: 1em;
     margin: 0 auto;
+  }
+  main h2 {
+    font-size: 28px;
   }
 </style>

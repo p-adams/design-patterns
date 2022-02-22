@@ -73,6 +73,7 @@
   }
   .markdown-editor-wrapper {
     margin-top: 10px;
+    margin-bottom: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,7 +105,7 @@
 
   .output {
     outline: 1px solid gray;
-    height: var(--max-height);
+    height: calc(var(--max-height) + 2px);
     text-align: left;
   }
 

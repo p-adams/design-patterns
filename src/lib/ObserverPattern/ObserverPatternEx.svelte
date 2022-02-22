@@ -1,24 +1,31 @@
 <script lang="ts">
-  let today = new Date().toLocaleString();
-  let subscriptions: Subscription[] = [
-    { name: "announcements" },
-    { name: "school cancellations" },
-    { name: "meals" },
+  const subscriptions: Subscription[] = [
+    { name: "ADD", label: "Add" },
+    /**
+     *  { name: "UPDATE", label: "Update" },
+    { name: "REMOVE", label: "Remove" },
+    */
   ];
 </script>
 
 <article>
   <header>
-    <h2>Bedrock High School Bulletin</h2>
-    <div>Today {today}</div>
+    <h3>List Observer</h3>
   </header>
   <section>
-    <p>Stay informed by subscribing below</p>
-    <ul>
-      {#each subscriptions as subscription}
-        <li>{subscription.name}</li>
+    <div class="number-list-table">
+      <div class="col-header">number</div>
+      <div class="col-header">subcriptions</div>
+      {#each [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as n}
+        <!-- if n is odd, subscribe it to NEW_NUMBER_ADDED_EVENT -->
+        <span class="cell">{n}</span>
+        <div class="cell">
+          {#each subscriptions as subscription}
+            <div><button>{subscription.label}</button></div>
+          {/each}
+        </div>
       {/each}
-    </ul>
+    </div>
   </section>
 </article>
 
@@ -26,19 +33,17 @@
   section {
     margin-top: 10px;
   }
-  section p {
+
+  .number-list-table {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+  }
+  .col-header {
+    padding: 10px;
     text-transform: uppercase;
+    font-weight: 600;
   }
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 10px auto;
-  }
-  ul li {
-    text-transform: capitalize;
-  }
-  header h2 {
-    font-size: 18px;
-    color: blue;
+  .cell {
+    padding: 10px;
   }
 </style>

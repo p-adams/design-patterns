@@ -29,6 +29,7 @@
 <style scoped>
   article {
     max-height: 550px;
+    border-top: 1px solid lightgray;
   }
   header {
     display: flex;
