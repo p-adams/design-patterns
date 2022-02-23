@@ -1,5 +1,6 @@
 <script lang="ts">
   let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  let currentHover: number = null;
   const subscriptions: Subscription[] = [
     { type: "ADD", label: "Add" },
     /**
@@ -11,6 +12,10 @@
     // TODO: inform observable to update its observers
     // numbers.notify(subscription, subscription.type);
   }
+
+  let _handleMouseover = (hoverItem: number) => (currentHover = hoverItem);
+
+  let _handleMouseout = () => (currentHover = null);
 </script>
 
 <article>
@@ -22,7 +27,15 @@
       <div>number list</div>
       <div class="numbers-list-container">
         [{#each numbers as n}
-          <div class="numbers-item">{n}</div>
+          <div
+            class="numbers-item"
+            on:mouseout={() => _handleMouseout()}
+            on:blur
+            on:focus
+            on:mouseover={(e) => _handleMouseover(n)}
+          >
+            {n}
+          </div>
         {/each}]
       </div>
     </div>
@@ -30,8 +43,8 @@
       <div class="col-header">number</div>
       <div class="col-header">subcriptions</div>
       {#each numbers as n}
-        <!-- if n is odd, subscribe it to NEW_NUMBER_ADDED_EVENT -->
-        <span class="cell">{n}</span>
+        <!-- if n is odd, subscribe it to NEW_NUMBER_ADDED_EVENT, for example -->
+        <span class={`cell ${currentHover === n ? "active" : ""}`}>{n}</span>
         <div class="cell">
           {#each subscriptions as subscription}
             <div>
@@ -55,7 +68,8 @@
     display: grid;
     grid-template-columns: 150px 1fr;
     border: 1px solid grey;
-    height: 400px;
+    height: 375px;
+    width: 400px;
     overflow-y: scroll;
     margin-top: 18px;
   }
@@ -64,9 +78,25 @@
     text-transform: uppercase;
     font-weight: 600;
   }
+
+  .col-header,
+  .cell {
+    font-size: 10px;
+  }
+
   .cell {
     padding: 10px;
     border-bottom: 1px solid lightgray;
+  }
+
+  .cell.active {
+    background-color: lightblue;
+    color: white;
+    font-weight: 600;
+  }
+
+  .cell button {
+    font-size: 10px;
   }
 
   .main {
@@ -90,5 +120,6 @@
   }
   .numbers-item {
     padding: 0 10px 0 10px;
+    cursor: pointer;
   }
 </style>
