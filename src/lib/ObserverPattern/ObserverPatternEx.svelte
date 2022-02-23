@@ -17,7 +17,7 @@
   <header>
     <h3>List Observer</h3>
   </header>
-  <section>
+  <section class="main">
     <div class="data-wrapper">
       <div>number list</div>
       <div class="numbers-list-container">
@@ -67,6 +67,14 @@
   .cell {
     padding: 10px;
     border-bottom: 1px solid lightgray;
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
   }
 
   .data-wrapper {
