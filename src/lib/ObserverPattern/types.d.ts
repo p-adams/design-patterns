@@ -1,4 +1,6 @@
+type SubscriptionType = "ADD";
+
 interface Subscription {
-  name: string;
+  type: SubscriptionType;
   label: string;
 }
