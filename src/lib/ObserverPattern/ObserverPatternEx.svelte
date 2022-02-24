@@ -24,14 +24,14 @@
   </header>
   <section class="main">
     <div class="data-wrapper">
-      <div>number list</div>
+      <div class="title">number list</div>
       <div class="numbers-list-container">
         [{#each numbers as n}
           <div
             class="numbers-item"
-            on:mouseout={() => _handleMouseout()}
             on:blur
             on:focus
+            on:mouseout={() => _handleMouseout()}
             on:mouseover={(e) => _handleMouseover(n)}
           >
             {n}
@@ -43,7 +43,6 @@
       <div class="col-header">number</div>
       <div class="col-header">subcriptions</div>
       {#each numbers as n}
-        <!-- if n is odd, subscribe it to NEW_NUMBER_ADDED_EVENT, for example -->
         <span class={`cell ${currentHover === n ? "active" : ""}`}>{n}</span>
         <div class="cell">
           {#each subscriptions as subscription}
