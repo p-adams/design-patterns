@@ -1,12 +1,14 @@
-interface Observer {
+export interface Observer {
   onNotify: (n: NumberItem, type: SubscriptionType) => void;
 }
 
 export class NumberItem implements Observer {
   //onNotify: (type: "ADD") => void;
   value: number;
-  constructor(value: number) {
+  label: string;
+  constructor(value: number, label: string) {
     this.value = value;
+    this.label = label;
   }
 
   onNotify(n: NumberItem, type: SubscriptionType) {
@@ -25,15 +27,18 @@ export class NumberItem implements Observer {
 
 class Observable {
   protected observers: Observer[] = [];
+
   notify(n: NumberItem, type: SubscriptionType) {
     for (let i = 0; i < this.observers.length; ++i) {
       this.observers[i].onNotify(n, type);
     }
   }
+
   public addObserver(o: Observer) {
     this.observers.push(o);
-    return this;
+    return this.observers;
   }
+
   public removeObserver(o: Observer) {
     const index = this.observers.findIndex((oo) => oo === o);
 
@@ -52,7 +57,8 @@ export class NumberList {
   private obj = new Observable();
 
   public addNumber(n: NumberItem) {
-    this.obj.addObserver(n).notify(n, "ADD");
+    console.log("hmm: ", n);
+    return this.obj.addObserver(n) as NumberItem[];
   }
 
   public removeNumber(n: NumberItem) {
