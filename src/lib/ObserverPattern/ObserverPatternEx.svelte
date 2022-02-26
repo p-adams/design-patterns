@@ -1,5 +1,8 @@
 <script lang="ts">
-  let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  import { afterUpdate, onMount } from "svelte";
+  import { NumberItem, NumberList } from "./numberList";
+
+  let numbers: NumberItem[] = [];
   let currentHover: number = null;
   const subscriptions: Subscription[] = [
     { type: "ADD", label: "Add" },
@@ -8,11 +11,25 @@
     { name: "REMOVE", label: "Remove" },
     */
   ];
-  function handleSubscriptionClick(subscription: Subscription) {
+  const numberList = new NumberList();
+  onMount(() => {
+    for (let i = 0; i < 3; ++i) {
+      numberList.addNumber(new NumberItem(i));
+    }
+    numbers = [...numberList.list];
+  });
+
+  function handleSubscriptionClick(
+    value: NumberItem,
+    subscription: Subscription
+  ) {
     // TODO: inform observable to update its observers
     // numbers.notify(subscription, subscription.type);
   }
 
+  function handleRemoveNumber(n: NumberItem) {
+    numbers = [...numberList.removeNumber(n)];
+  }
   let _handleMouseover = (hoverItem: number) => (currentHover = hoverItem);
 
   let _handleMouseout = () => (currentHover = null);
@@ -25,29 +42,38 @@
   <section class="main">
     <div class="data-wrapper">
       <div class="title">number list</div>
+
       <div class="numbers-list-container">
-        [{#each numbers as n}
+        [{#each numbers as { value }}
           <div
             class="numbers-item"
             on:blur
             on:focus
             on:mouseout={() => _handleMouseout()}
-            on:mouseover={(e) => _handleMouseover(n)}
+            on:mouseover={(e) => _handleMouseover(value)}
           >
-            {n}
+            {value}
           </div>
         {/each}]
       </div>
     </div>
     <div class="number-list-table">
+      <div class="col-header">remove</div>
       <div class="col-header">number</div>
       <div class="col-header">subcriptions</div>
-      {#each numbers as n}
-        <span class={`cell ${currentHover === n ? "active" : ""}`}>{n}</span>
+      {#each numbers as num}
+        <div class="cell">
+          <button on:click={() => handleRemoveNumber(num)}>x</button>
+        </div>
+
+        <span class={`cell ${currentHover === num.value ? "active" : ""}`}
+          >{num.value}</span
+        >
         <div class="cell">
           {#each subscriptions as subscription}
             <div>
-              <button on:click={() => handleSubscriptionClick(subscription)}
+              <button
+                on:click={() => handleSubscriptionClick(num, subscription)}
                 >{subscription.label}</button
               >
             </div>
@@ -65,7 +91,7 @@
 
   .number-list-table {
     display: grid;
-    grid-template-columns: 150px 1fr;
+    grid-template-columns: 50px 150px 1fr;
     border: 1px solid grey;
     height: 375px;
     width: 400px;
