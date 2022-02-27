@@ -1,8 +1,11 @@
 <script lang="ts">
+  import { afterUpdate } from "svelte";
+
   import { NumberItem, NumberList } from "./numberList";
 
   let numbers: number[] = [0, 1, 2, 3];
   let observers: NumberItem[] = [];
+  let count = 0;
   let currentHover: number = null;
 
   const subscriptions: Subscription[] = [
@@ -10,6 +13,11 @@
     { type: "SUBTRACTION", label: "Substraction" },
   ];
   const numberList = new NumberList();
+
+  afterUpdate(() => {
+    // if count change
+    console.log("obsv: ", observers);
+  });
 
   let addNumber = (n: number) => {
     observers = [...numberList.addNumber(new NumberItem(n))];
@@ -25,28 +33,15 @@
     subscription: Subscription
   ) {
     const checked: boolean = (target as HTMLInputElement).checked;
-    switch (subscription.type) {
-      case "ADDITION":
-        // get updates whenever an addition operation is performed on the list
-        if (checked) {
-          console.log(`subscribing ${value} to ${subscription.type}`);
-        } else {
-          console.log(`removing ${value} from ${subscription.type}`);
-        }
-        break;
-      case "SUBTRACTION":
-        if (checked) {
-          console.log(`subscribing ${value} to ${subscription.type}`);
-        } else {
-          console.log(`removing ${value} from ${subscription.type}`);
-        }
-        break;
 
-      default:
-        break;
-    }
+    checked
+      ? observer(value).subscribe(subscription)
+      : observer(value).unsubscribe(subscription);
   }
-
+  $: {
+    console.log("count: ", count);
+    numberList.update(count);
+  }
   $: observer = (v: number) =>
     observers?.find((observer) => observer.value === v);
 </script>
@@ -85,6 +80,13 @@
           </div>
         {/if}
       </div>
+    </div>
+    <div>
+      <div>
+        <button on:click={() => ++count}>+</button>
+        <button on:click={() => --count}>-</button>
+      </div>
+      <span>count {count}</span>
     </div>
     <div class="number-list-table">
       <div class="col-header">add/remove</div>

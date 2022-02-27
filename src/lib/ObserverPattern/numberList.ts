@@ -1,35 +1,50 @@
 export interface Observer {
-  onNotify: (n: NumberItem, type: SubscriptionType) => void;
+  // events, payload, options...
+  onNotify: (n: number) => void;
 }
 
 export class NumberItem implements Observer {
-  //onNotify: (type: "ADD") => void;
   value: number;
-
+  subscriptions: Subscription[];
   constructor(value: number) {
     this.value = value;
+    this.subscriptions = [];
   }
 
-  onNotify(n: NumberItem, type: SubscriptionType) {
-    if (this.value === n.value) return;
-    switch (type) {
-      case "ADD":
-        console.log(`${this.value} said hi, ${n.value}`);
-        break;
-      case "REMOVE":
-        console.log(`${this.value} said bye, ${n.value}`);
-      default:
-        break;
+  subscribe(subcription: Subscription) {
+    this.subscriptions.push(subcription);
+  }
+
+  unsubscribe(subcription: Subscription) {
+    const idx = this.subscriptions.findIndex(
+      (sub) => (sub.type = subcription.type)
+    );
+    if (idx > -1) {
+      this.subscriptions.splice(idx, 1);
+    }
+  }
+  // TODO: fix notification system
+  onNotify(count: number) {
+    for (const subscription of this.subscriptions) {
+      switch (subscription.type) {
+        case "ADDITION":
+          console.log(`an addition operation occurred `);
+          break;
+        case "SUBTRACTION":
+          console.log(`a subtraction operation occurred`);
+        default:
+          break;
+      }
     }
   }
 }
 
 class Observable {
   protected observers: Observer[] = [];
-
-  notify(n: NumberItem, type: SubscriptionType) {
+  // make NumberItem generic
+  notify(count: number) {
     for (let i = 0; i < this.observers.length; ++i) {
-      this.observers[i].onNotify(n, type);
+      this.observers[i].onNotify(count);
     }
   }
 
@@ -61,6 +76,11 @@ export class NumberList {
 
   public removeNumber(n: NumberItem) {
     return this.obj.removeObserver(n) as NumberItem[];
+  }
+
+  public update(count: number) {
+    console.log("update: ", count);
+    this.obj.notify(count);
   }
 
   public get list() {
