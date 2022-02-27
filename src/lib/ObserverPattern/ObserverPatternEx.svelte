@@ -76,11 +76,13 @@
         {#if observers.length === 0}
           empty
         {:else}
-          [{#each observers as observer}
-            <div class="numbers-item">
-              {observer.value}
-            </div>
-          {/each} ]
+          <div class="observers-list-wrapper">
+            [{#each observers as observer}
+              <div class="numbers-item">
+                {observer.value}
+              </div>
+            {/each} ]
+          </div>
         {/if}
       </div>
     </div>
@@ -207,6 +209,9 @@
     display: flex;
     margin-top: 12px;
     margin-bottom: 12px;
+  }
+  .observers-list-wrapper {
+    display: inherit;
   }
   .numbers-item {
     padding: 0 10px 0 10px;
