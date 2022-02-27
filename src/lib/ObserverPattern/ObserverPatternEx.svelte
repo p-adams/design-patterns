@@ -34,15 +34,10 @@
       : observer(value).unsubscribe(subscription);
   }
 
-  let inc = "";
-  let dec = "";
-
-  $: {
-    console.log("c: ", count);
-  }
-
-  $: observer = (v: number) =>
-    observers?.find((observer) => observer.value === v);
+  $: observer = (v: number) => {
+    console.log("count: ", count);
+    return observers?.find((observer) => observer.value === v);
+  };
 </script>
 
 <article>
@@ -128,8 +123,10 @@
         </div>
         <div class="cell">
           <div class="notifications-wrapper">
-            <div>{inc}</div>
-            <div>{dec}</div>
+            {#if observer(num)}
+              <div>{observer(num)?.incrementMessage}</div>
+              <div>{observer(num)?.decrementMessage}</div>
+            {/if}
           </div>
         </div>
       {/each}
