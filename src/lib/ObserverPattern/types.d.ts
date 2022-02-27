@@ -1,4 +1,4 @@
-type SubscriptionType = "ADD" | "REMOVE";
+type SubscriptionType = "ADD" | "REMOVE" | "ADDITION" | "SUBTRACTION";
 
 interface Subscription {
   type: SubscriptionType;

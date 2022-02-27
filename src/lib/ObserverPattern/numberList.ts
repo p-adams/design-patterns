@@ -5,10 +5,9 @@ export interface Observer {
 export class NumberItem implements Observer {
   //onNotify: (type: "ADD") => void;
   value: number;
-  label: string;
-  constructor(value: number, label: string) {
+
+  constructor(value: number) {
     this.value = value;
-    this.label = label;
   }
 
   onNotify(n: NumberItem, type: SubscriptionType) {
@@ -57,12 +56,10 @@ export class NumberList {
   private obj = new Observable();
 
   public addNumber(n: NumberItem) {
-    console.log("hmm: ", n);
     return this.obj.addObserver(n) as NumberItem[];
   }
 
   public removeNumber(n: NumberItem) {
-    this.obj.notify(n, "REMOVE");
     return this.obj.removeObserver(n) as NumberItem[];
   }
 

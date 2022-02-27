@@ -1,29 +1,35 @@
 <script lang="ts">
   import { NumberItem, NumberList, Observer } from "./numberList";
 
-  let numbers: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  let numbers: number[] = [0, 1, 2, 3];
   let observers: NumberItem[] = [];
   let currentHover: number = null;
   const subscriptions: Subscription[] = [
-    { type: "ADD", label: "Add" },
+    { type: "ADDITION", label: "Addition" },
+    { type: "SUBTRACTION", label: "Substraction" },
+
     /**
      *  { name: "UPDATE", label: "Update" },
-    { name: "REMOVE", label: "Remove" },
+    
     */
   ];
   const numberList = new NumberList();
 
-  function handleSubscriptionClick(value: number, subscription: Subscription) {
+  let addNumber = (n: number) => {
+    observers = [...numberList.addNumber(new NumberItem(n))];
+  };
+
+  let removeNumber = (n: number) => {
+    observers = [...numberList.removeNumber(selectedObserverByValue(n))];
+  };
+
+  function handleSubscriptionCheck(value: number, subscription: Subscription) {
+    console.log("v: ", value, subscription.type);
     switch (subscription.type) {
-      case "ADD":
-        const n = numberList.addNumber(
-          new NumberItem(value, subscription.label)
-        );
-        observers = n;
+      case "ADDITION":
+        // get updates whenever an addition operation is performed on the list
         break;
-      case "REMOVE":
-        console.log("remove");
-        break;
+
       default:
         break;
     }
@@ -32,6 +38,9 @@
   let _handleMouseover = (hoverItem: number) => (currentHover = hoverItem);
 
   let _handleMouseout = () => (currentHover = null);
+
+  $: selectedObserverByValue = (v: number) =>
+    observers?.find((observer) => observer.value === v);
 </script>
 
 <article>
@@ -68,25 +77,40 @@
       </div>
     </div>
     <div class="number-list-table">
-      <div class="col-header">remove</div>
+      <div class="col-header">add/remove</div>
       <div class="col-header">number</div>
       <div class="col-header">subcriptions</div>
       {#each numbers as num}
         <div class="cell">
-          <button on:click={() => handleRemoveNumber(num)}>x</button>
+          {#if selectedObserverByValue(num)}
+            <button on:click={() => removeNumber(num)}>x</button>
+          {:else}
+            <button on:click={() => addNumber(num)}>+</button>
+          {/if}
         </div>
 
-        <span class={`cell ${currentHover === num ? "active" : ""}`}>{num}</span
+        <span
+          class={`cell ${
+            currentHover === num
+              ? "active"
+              : num === selectedObserverByValue(num)?.value
+              ? "observer-item"
+              : ""
+          }`}>{num}</span
         >
         <div class="cell">
-          {#each subscriptions as subscription, i}
-            <div>
-              <button
-                on:click={() => handleSubscriptionClick(num, subscription)}
-                >{subscription.label}</button
-              >
-            </div>
-          {/each}
+          <div class="subscriptions-wrapper">
+            {#each subscriptions as subscription, i}
+              <label>
+                <input
+                  type="checkbox"
+                  disabled={!selectedObserverByValue(num)}
+                  on:change={(_) => handleSubscriptionCheck(num, subscription)}
+                />
+                {subscription.label}
+              </label>
+            {/each}
+          </div>
         </div>
       {/each}
     </div>
@@ -119,6 +143,11 @@
   }
 
   .cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
     padding: 10px;
     border-bottom: 1px solid lightgray;
   }
@@ -129,8 +158,20 @@
     font-weight: 600;
   }
 
+  .cell.observer-item {
+    background-color: lightgreen;
+    color: white;
+    font-weight: 600;
+  }
+
   .cell button {
     font-size: 10px;
+  }
+
+  .subscriptions-wrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
   }
 
   .main {
