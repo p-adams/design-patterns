@@ -8,6 +8,8 @@
   let count = 0;
   let currentHover: number = null;
 
+  let style: "even" | "odd" = "even";
+
   const subscriptions: Subscription[] = [
     { type: "INC", label: "Addition" },
     { type: "DEC", label: "Substraction" },
@@ -35,7 +37,11 @@
   }
 
   $: observer = (v: number) => {
-    console.log("count: ", count);
+    if (count % 2 === 0) {
+      style = "even";
+    } else {
+      style = "odd";
+    }
     return observers?.find((observer) => observer.value === v);
   };
 </script>
@@ -47,6 +53,7 @@
   <section class="main">
     <div class="data-wrapper">
       <div class="title">number list</div>
+
       <div class="numbers-list-container">
         [{#each numbers as value}
           <div
@@ -81,7 +88,7 @@
         <button on:click={() => numberList.update(++count, "INC")}>+</button>
         <button on:click={() => numberList.update(--count, "DEC")}>-</button>
       </div>
-      <span>count {count}</span>
+      <span class={`count ${style}`}>count {count} - {style}</span>
     </div>
     <div class="number-list-table">
       <div class="col-header">add/remove</div>
@@ -139,9 +146,19 @@
     margin-top: 10px;
   }
 
+  .count {
+    font-weight: 600;
+  }
+  .count.even {
+    color: blue;
+  }
+  .count.odd {
+    color: green;
+  }
+
   .number-list-table {
     display: grid;
-    grid-template-columns: 50px 150px 200px 1fr;
+    grid-template-columns: 80px 150px 200px 1fr;
     border: 1px solid grey;
     height: 375px;
     width: 600px;
@@ -152,6 +169,8 @@
     padding: 10px;
     text-transform: uppercase;
     font-weight: 600;
+    background-color: blue;
+    color: white;
   }
 
   .col-header,
@@ -176,7 +195,7 @@
   }
 
   .cell.observer-item {
-    background-color: lightgreen;
+    background-color: green;
     color: white;
     font-weight: 600;
   }
