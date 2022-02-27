@@ -1,17 +1,13 @@
 <script lang="ts">
-  import { NumberItem, NumberList, Observer } from "./numberList";
+  import { NumberItem, NumberList } from "./numberList";
 
   let numbers: number[] = [0, 1, 2, 3];
   let observers: NumberItem[] = [];
   let currentHover: number = null;
+
   const subscriptions: Subscription[] = [
     { type: "ADDITION", label: "Addition" },
     { type: "SUBTRACTION", label: "Substraction" },
-
-    /**
-     *  { name: "UPDATE", label: "Update" },
-    
-    */
   ];
   const numberList = new NumberList();
 
@@ -20,14 +16,30 @@
   };
 
   let removeNumber = (n: number) => {
-    observers = [...numberList.removeNumber(selectedObserverByValue(n))];
+    observers = [...numberList.removeNumber(observer(n))];
   };
 
-  function handleSubscriptionCheck(value: number, subscription: Subscription) {
-    console.log("v: ", value, subscription.type);
+  function handleSubscriptionCheck(
+    target: EventTarget,
+    value: number,
+    subscription: Subscription
+  ) {
+    const checked: boolean = (target as HTMLInputElement).checked;
     switch (subscription.type) {
       case "ADDITION":
         // get updates whenever an addition operation is performed on the list
+        if (checked) {
+          console.log(`subscribing ${value} to ${subscription.type}`);
+        } else {
+          console.log(`removing ${value} from ${subscription.type}`);
+        }
+        break;
+      case "SUBTRACTION":
+        if (checked) {
+          console.log(`subscribing ${value} to ${subscription.type}`);
+        } else {
+          console.log(`removing ${value} from ${subscription.type}`);
+        }
         break;
 
       default:
@@ -35,11 +47,7 @@
     }
   }
 
-  let _handleMouseover = (hoverItem: number) => (currentHover = hoverItem);
-
-  let _handleMouseout = () => (currentHover = null);
-
-  $: selectedObserverByValue = (v: number) =>
+  $: observer = (v: number) =>
     observers?.find((observer) => observer.value === v);
 </script>
 
@@ -56,8 +64,8 @@
             class="numbers-item"
             on:blur
             on:focus
-            on:mouseout={() => _handleMouseout()}
-            on:mouseover={(e) => _handleMouseover(value)}
+            on:mouseout={() => (currentHover = null)}
+            on:mouseover={() => (currentHover = value)}
           >
             {value}
           </div>
@@ -82,7 +90,7 @@
       <div class="col-header">subcriptions</div>
       {#each numbers as num}
         <div class="cell">
-          {#if selectedObserverByValue(num)}
+          {#if observer(num)}
             <button on:click={() => removeNumber(num)}>x</button>
           {:else}
             <button on:click={() => addNumber(num)}>+</button>
@@ -93,7 +101,7 @@
           class={`cell ${
             currentHover === num
               ? "active"
-              : num === selectedObserverByValue(num)?.value
+              : num === observer(num)?.value
               ? "observer-item"
               : ""
           }`}>{num}</span
@@ -104,8 +112,9 @@
               <label>
                 <input
                   type="checkbox"
-                  disabled={!selectedObserverByValue(num)}
-                  on:change={(_) => handleSubscriptionCheck(num, subscription)}
+                  disabled={!observer(num)}
+                  on:change={({ target }) =>
+                    handleSubscriptionCheck(target, num, subscription)}
                 />
                 {subscription.label}
               </label>
