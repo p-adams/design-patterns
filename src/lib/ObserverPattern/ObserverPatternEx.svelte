@@ -9,15 +9,10 @@
   let currentHover: number = null;
 
   const subscriptions: Subscription[] = [
-    { type: "ADDITION", label: "Addition" },
-    { type: "SUBTRACTION", label: "Substraction" },
+    { type: "INC", label: "Addition" },
+    { type: "DEC", label: "Substraction" },
   ];
   const numberList = new NumberList();
-
-  afterUpdate(() => {
-    // if count change
-    console.log("obsv: ", observers);
-  });
 
   let addNumber = (n: number) => {
     observers = [...numberList.addNumber(new NumberItem(n))];
@@ -38,10 +33,14 @@
       ? observer(value).subscribe(subscription)
       : observer(value).unsubscribe(subscription);
   }
+
+  let inc = "";
+  let dec = "";
+
   $: {
-    console.log("count: ", count);
-    numberList.update(count);
+    console.log("c: ", count);
   }
+
   $: observer = (v: number) =>
     observers?.find((observer) => observer.value === v);
 </script>
@@ -82,9 +81,10 @@
       </div>
     </div>
     <div>
+      <h4>counter app</h4>
       <div>
-        <button on:click={() => ++count}>+</button>
-        <button on:click={() => --count}>-</button>
+        <button on:click={() => numberList.update(++count, "INC")}>+</button>
+        <button on:click={() => numberList.update(--count, "DEC")}>-</button>
       </div>
       <span>count {count}</span>
     </div>
@@ -92,6 +92,7 @@
       <div class="col-header">add/remove</div>
       <div class="col-header">number</div>
       <div class="col-header">subcriptions</div>
+      <div class="col-header">notifications</div>
       {#each numbers as num}
         <div class="cell">
           {#if observer(num)}
@@ -125,6 +126,12 @@
             {/each}
           </div>
         </div>
+        <div class="cell">
+          <div class="notifications-wrapper">
+            <div>{inc}</div>
+            <div>{dec}</div>
+          </div>
+        </div>
       {/each}
     </div>
   </section>
@@ -137,10 +144,10 @@
 
   .number-list-table {
     display: grid;
-    grid-template-columns: 50px 150px 1fr;
+    grid-template-columns: 50px 150px 200px 1fr;
     border: 1px solid grey;
     height: 375px;
-    width: 400px;
+    width: 600px;
     overflow-y: scroll;
     margin-top: 18px;
   }
