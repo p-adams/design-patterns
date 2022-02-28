@@ -5,7 +5,7 @@
 
 <article>
   <header>
-    {#if id}
+    {#if id !== null}
       <span class="template-id">{id}</span>
     {/if}
     <slot name="header" />

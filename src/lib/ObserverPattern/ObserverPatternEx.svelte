@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { afterUpdate } from "svelte";
-
   import { NumberItem, NumberList } from "./numberList";
 
   let numbers: number[] = [0, 1, 2, 3];

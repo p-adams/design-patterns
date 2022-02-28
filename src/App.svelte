@@ -1,21 +1,10 @@
 <script lang="ts">
-  import DesignPatternTemplate from "./lib/DesignPatternTemplate.svelte";
-  import CommandPatternEx from "./lib/CommandPattern/CommandPatternEx.svelte";
-  import ObserverPatternEx from "./lib/ObserverPattern/ObserverPatternEx.svelte";
+  import AllPatterns from "./AllPatterns.svelte";
 </script>
 
 <main>
   <h2>Design Patterns</h2>
-  <DesignPatternTemplate id="1">
-    <h2 slot="header">Command Pattern</h2>
-    <div slot="description">An example of the Command Pattern</div>
-    <CommandPatternEx slot="component" />
-  </DesignPatternTemplate>
-  <DesignPatternTemplate id="2" opened={true}>
-    <h2 slot="header">Observer Pattern</h2>
-    <div slot="description">An example of the Observer Pattern</div>
-    <ObserverPatternEx slot="component" />
-  </DesignPatternTemplate>
+  <AllPatterns />
 </main>
 
 <style>

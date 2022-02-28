@@ -1,5 +1,4 @@
 export interface Observer {
-  // events, payload, options...
   onNotify: (n: number, event: CountEvent) => void;
 }
 
