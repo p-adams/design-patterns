@@ -1,3 +1,3 @@
-# Design Patterns and Visualizations
+# Design Patterns
 
-Sandbox for useful design patterns and visualizations.
+Sandbox for useful design patterns.
